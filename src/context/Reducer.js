@@ -54,10 +54,20 @@ const Reducer = (state, action) => {
         isFetching: false,
         error: true,
       };
+    case "DELETE_BY_INDEX":
+      let removed = [...state.result];
+      removed.splice(action.target, 1);
+      return {
+        keyword: state.keyword,
+        page: state.page,
+        npages: state.npages,
+        result: removed,
+        isFetching: false,
+        error: false,
+      };
     default:
       return state;
   }
 };
 
 export default Reducer;
-//[...state.result, action.payload]

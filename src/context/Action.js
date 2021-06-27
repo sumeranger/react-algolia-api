@@ -26,3 +26,8 @@ export const LoadMoreSuccess = (max, result) => ({
 export const LoadMoreFailure = () => ({
   type: "LOAD_MORE_FAILURE",
 });
+
+export const DeleteById = (t) => ({
+  type: "DELETE_BY_INDEX",
+  target: t,
+});

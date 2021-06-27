@@ -29,6 +29,12 @@ export default function News(props){
         })
     }
 
+    const handleDelete = (e) =>{
+        e.preventDefault();
+        dispatch({type:"DELETE_BY_INDEX",
+                  target:e.target.value});
+    }   
+
     return result && (<div className="news">
         <table className="newsTable">
             <thead>
@@ -43,7 +49,7 @@ export default function News(props){
             </thead>
             <tbody>
                 {result.map(
-                    ({objectID, author, num_comments, title, url}) => (
+                    ({objectID, author, num_comments, title, url}, index) => (
                     <tr key={objectID}>
                         <td className="newsTableCell">{objectID}</td>
                         <td className="newsTableCell">{author}</td>
@@ -51,7 +57,7 @@ export default function News(props){
                         <td className="newsTableCell">{title}</td>
                         <td className="newsTableCell">{url}</td>
                         <td className="newsTableCell">
-                            <button className="newsButton">Delete</button>
+                            <button className="newsButton" onClick={handleDelete} value={index}>Delete</button>
                         </td>
                     </tr>    
                     )
