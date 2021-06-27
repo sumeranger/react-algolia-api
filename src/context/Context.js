@@ -4,6 +4,7 @@ import Reducer from "./Reducer";
 const INITIAL_STATE = {
   keyword: "",
   page: 0,
+  npages: 0,
   result: null,
   isFetching: false,
   error: false,
@@ -19,6 +20,7 @@ export const ContextProvider = ({ children }) => {
       value={{
         keyword: state.keyword,
         page: state.page,
+        npages: state.npages,
         result: state.result,
         isFetching: state.isFetching,
         error: state.error,

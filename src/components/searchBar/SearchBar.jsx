@@ -6,10 +6,10 @@ export default function SearchBar(){
      const [formText, setFormText] = useState("");
     const {dispatch} = useContext(Context);
 
-    const handleSubmit = (e) =>{
+    const handleSubmit = async (e) =>{
         e.preventDefault();
         dispatch({type:"SEARCH_START"});
-        fetch("http://cors-anywhere.herokuapp.com/http://hn.algolia.com/api/v1/search?query="+formText+"&hitsPerPage=10",{
+        await fetch("http://cors-anywhere.herokuapp.com/http://hn.algolia.com/api/v1/search?query="+formText+"&hitsPerPage=10",{
             method:"GET",
             headers: new Headers({"Content-Type":"application/json"})
         })
@@ -20,10 +20,10 @@ export default function SearchBar(){
             throw res;
         })
         .then(data => {
-            console.log(data);
             dispatch({type:"SEARCH_SUCCESS",
-                      keyword:formText,
-                      payload:data});        
+                      query:formText,
+                      maxpages:data.nbPages,
+                      payload:data.hits});        
         })
         .catch(err =>{
             console.log(err);

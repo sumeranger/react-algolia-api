@@ -3,7 +3,32 @@ import { useContext } from "react";
 import {Context} from "../../context/Context";
 
 export default function News(props){
-    const {dispatch, keyword, page, result} = useContext(Context);
+    const {dispatch, keyword, page, npages, result} = useContext(Context);
+
+    const handleLoadMore = async (e) =>{
+        e.preventDefault();
+        dispatch({type:"LOAD_MORE_START"});
+        await fetch("http://cors-anywhere.herokuapp.com/http://hn.algolia.com/api/v1/search?query="+keyword+"&hitsPerPage=10&page="+(page+1),{
+            method:"GET",
+            headers: new Headers({"Content-Type":"application/json"})
+        })
+        .then(res => {
+            if(res.ok){
+                return res.json();
+            }
+            throw res;
+        })
+        .then(data => {
+            dispatch({type:"LOAD_MORE_SUCCESS",
+                      maxpages:data.nbPages,
+                      payload:data.hits});        
+        })
+        .catch(err =>{
+            console.log(err);
+            dispatch({type:"LOAD_MORE_FAILURE"});
+        })
+    }
+
     return result && (<div className="news">
         <table className="newsTable">
             <thead>
@@ -17,7 +42,7 @@ export default function News(props){
                 </tr>
             </thead>
             <tbody>
-                {result.hits && result.hits.map(
+                {result.map(
                     ({objectID, author, num_comments, title, url}) => (
                     <tr key={objectID}>
                         <td className="newsTableCell">{objectID}</td>
@@ -25,13 +50,15 @@ export default function News(props){
                         <td className="newsTableCell">{num_comments}</td>
                         <td className="newsTableCell">{title}</td>
                         <td className="newsTableCell">{url}</td>
-                        <td className="newsTableCell">Remove</td>
+                        <td className="newsTableCell">
+                            <button className="newsButton">Delete</button>
+                        </td>
                     </tr>    
                     )
                 )}
             </tbody>
         </table>
-            {page < result.nbPages &&
-            <button className="newsLoadButton">Load more</button>}
+            {page < npages &&
+            <button className="newsLoadButton" onClick={handleLoadMore}>Load more</button>}
         </div>)
 }
