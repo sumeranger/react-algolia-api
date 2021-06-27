@@ -1,0 +1,32 @@
+.news {
+  margin-top: 2em;
+  text-align: center;
+}
+
+.newsTable {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.newsTableHead {
+  border: none;
+  background-color: #1e90ff;
+  padding: 8px;
+  text-align: left;
+  font-weight: 700;
+  font-weight: bold;
+  color: white;
+}
+
+.newsTableCell {
+  border-bottom: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+  font-weight: 400;
+}
+
+.newsLoadButton {
+  margin-top: 15px;
+  padding: 2px 8px 2px 8px;
+  font-weight: 400;
+}
